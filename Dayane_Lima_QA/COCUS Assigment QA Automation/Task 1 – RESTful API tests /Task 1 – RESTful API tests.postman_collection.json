@@ -1,0 +1,325 @@
+{
+	"info": {
+		"_postman_id": "e148b245-4264-480e-a616-e24f5d900d26",
+		"name": "Task 1 – RESTful API tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20760720"
+	},
+	"item": [
+		{
+			"name": "Successful Registration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validate Response Code",
+							"pm.test(\"Status Code 200\",() => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Validate json data Type",
+							"const jsonData = pm.response.json();",
+							"pm.test(\"Data Type Validations\", ()=> {",
+							"    pm.expect(jsonData).to.be.an(\"object\");",
+							"    pm.expect(jsonData.id).to.be.a(\"number\");",
+							"    pm.expect(jsonData.token).to.be.a(\"string\");",
+							"});",
+							"",
+							"//Storing the id variable",
+							"var jsonDataResp = JSON.parse(responseBody);",
+							"pm.environment.set(\"id\", jsonDataResp.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_qa}}/api/register",
+					"host": [
+						"{{url_qa}}"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Unsuccessful registration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validate Response Status Code",
+							"pm.test(\"Response Code: 400 - Missing Password\",()=>{",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Response Status : Bad Request\",()=>{",
+							"    pm.response.to.have.status(\"Bad Request\");",
+							"});",
+							"",
+							"// Validate json data Type",
+							"const jsonData = pm.response.json();",
+							"pm.test(\"Data Type Validations\", ()=> {",
+							"    pm.expect(jsonData).to.be.an(\"object\");",
+							"    pm.expect(jsonData.error).to.be.a(\"string\");",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_qa}}/api/register",
+					"host": [
+						"{{url_qa}}"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validate json data Type",
+							"const jsonData = pm.response.json();",
+							"pm.test(\"Data Type Validations\", () => {",
+							"    pm.expect(jsonData).to.be.an(\"object\");",
+							"    pm.expect(jsonData.page).to.be.a(\"number\");",
+							"    pm.expect(jsonData.per_page).to.be.a(\"number\");",
+							"    pm.expect(jsonData.total_pages).to.be.a(\"number\");",
+							"    pm.expect(jsonData.data).to.be.an(\"array\");   ",
+							"});",
+							"",
+							"// Validate Response Code",
+							"pm.test(\"Status Code 200\",() => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url_qa}}/api/users",
+					"host": [
+						"{{url_qa}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List User-EXTRA: Schema/Data/Chaining",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//json Schema to use on the validation",
+							"var schema = {",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",",
+							"  \"type\": \"object\",",
+							"  \"properties\": {",
+							"    \"data\": {",
+							"      \"type\": \"object\",",
+							"      \"properties\": {",
+							"        \"id\": {",
+							"          \"type\": \"integer\"",
+							"        },",
+							"        \"email\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"first_name\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"last_name\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"avatar\": {",
+							"          \"type\": \"string\"",
+							"        }",
+							"      },",
+							"      \"required\": [",
+							"        \"id\",",
+							"        \"email\",",
+							"        \"first_name\",",
+							"        \"last_name\",",
+							"        \"avatar\"",
+							"      ]",
+							"    },",
+							"    \"support\": {",
+							"      \"type\": \"object\",",
+							"      \"properties\": {",
+							"        \"url\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"text\": {",
+							"          \"type\": \"string\"",
+							"        }",
+							"      },",
+							"      \"required\": [",
+							"        \"url\",",
+							"        \"text\"",
+							"      ]",
+							"    }",
+							"  },",
+							"  \"required\": [",
+							"    \"data\",",
+							"    \"support\"",
+							"  ]",
+							"}",
+							"// Storing Response body data ",
+							"const jsonData = pm.response.json();",
+							"",
+							"// json schema Validation",
+							"pm.test(\"Validating the Json Schema\", function(){",
+							"pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+							"}",
+							");",
+							"//Validate the data",
+							"pm.test(\"Validate Response Data\", () => {",
+							"    pm.expect(jsonData.data.id).to.eql(pm.environment.get(\"id\"));",
+							" ",
+							"});",
+							"// Unset Variable Env",
+							"pm.environment.unset(\"id\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_qa}}/api/users?page=2&id={{id}}",
+					"host": [
+						"{{url_qa}}"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "id",
+							"value": "{{id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Headers: Content-Type is Present\", ()=> {",
+					"    pm.response.to.have.header(\"Content-Type\");",
+					"}",
+					");",
+					"pm.test(\"Headers: Content-Type is application/json; charset=utf-8\", ()=> {",
+					"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json; charset=utf-8\");",
+					"}",
+					");",
+					"console.log(pm.environment.get(\"url_qa\"))"
+				]
+			}
+		}
+	]
+}

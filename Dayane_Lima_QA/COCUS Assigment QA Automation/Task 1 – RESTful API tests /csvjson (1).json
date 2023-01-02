@@ -1,0 +1,26 @@
+[
+  {
+    "email": "george.bluth@reqres.in",
+    "password": "test"
+  },
+  {
+    "email": "janet.weaver@reqres.in",
+    "password": "test"
+  },
+  {
+    "email": "emma.wong@reqres.in",
+    "password": "test"
+  },
+  {
+    "email": "eve.holt@reqres.in",
+    "password": "pistol"
+  },
+  {
+    "email": "charles.morris@reqres.in",
+    "password": "test"
+  },
+  {
+    "email": "tracey.ramos@reqres.in",
+    "password": "test"
+  }
+]
