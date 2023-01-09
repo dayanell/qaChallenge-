@@ -1,0 +1,497 @@
+{
+	"info": {
+		"_postman_id": "b89bd5bf-fe5b-48c4-a246-bad283a526fe",
+		"name": "Dayane_Lima",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20760720"
+	},
+	"item": [
+		{
+			"name": "Login/Auth",
+			"item": [
+				{
+					"name": "Login DE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "device-os",
+								"value": "{{deviceOs}}"
+							},
+							{
+								"key": "app-locale",
+								"value": "{{appLocale}}"
+							},
+							{
+								"key": "x-api-key",
+								"value": "0qNSzqieHI5M36LLgY7Y85Zco0SMXKyr37MIOSAG"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"test\",\n   \"password\": \"test\"\n   \n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login?device-os={{deviceOs}}&app-locale={{appLocale}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "device-os",
+									"value": "{{deviceOs}}"
+								},
+								{
+									"key": "app-locale",
+									"value": "{{appLocale}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth UK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate json data Type",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Data Type Validations\", ()=> {",
+									"    pm.expect(jsonData).to.be.an(\"object\");",
+									"    pm.expect(jsonData.bookingRef).to.be.a(\"string\");",
+									"    pm.expect(jsonData.surname).to.be.a(\"string\");",
+									"       ",
+									"});",
+									"pm.test(\"File response format\", () =>{",
+									"    pm.response.to.be.json;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"",
+									"var jsonDataResp = JSON.parse(responseBody);",
+									"pm.environment.set(\"bookingRefResponse\", jsonDataResp.bookingRef);",
+									"    pm.test(\"Check the bookingRef repoonse value\", ()=> {",
+									"    pm.expect(jsonData.bookingRef).to.be.eql(pm.environment.get(\"bookingRefResponse\");",
+									"    ",
+									"",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "device-os",
+								"value": "{{deviceOs}}"
+							},
+							{
+								"key": "app-locale",
+								"value": "{{appLocale}}"
+							},
+							{
+								"key": "x-api-key",
+								"value": "0qNSzqieHI5M36LLgY7Y85Zco0SMXKyr37MIOSAG",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/auth/login?bookingRef={{bookingRef}}&surname={{surname}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "bookingRef",
+									"value": "{{bookingRef}}"
+								},
+								{
+									"key": "surname",
+									"value": "{{surname}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "key",
+						"value": "x-api-key",
+						"type": "string"
+					},
+					{
+						"key": "value",
+						"value": "0qNSzqieHI5M36LLgY7Y85Zco0SMXKyr37MIOSAG",
+						"type": "string"
+					},
+					{
+						"key": "in",
+						"value": "query",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//Validating Response Code",
+							"pm.test(\"The status code is 200\",() =>{",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//Storing Response ",
+							"var responseHeaderstoken = pm.response.headers.get(\"login-token\")",
+							"//Creating environment variable to store login_token",
+							"pm.environment.set(\"loginToken\", responseHeaderstoken);",
+							"",
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Booking",
+			"item": [
+				{
+					"name": "Available bookings",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate json data Type",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Data Type Validations\", ()=> {",
+									"    pm.expect(jsonData).to.be.an(\"object\");",
+									"    pm.expect(jsonData.bookings).to.be.a(\"array\");",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "device-os",
+								"value": "{{deviceOs}}"
+							},
+							{
+								"key": "app-locale",
+								"value": "{{appLocale}}"
+							},
+							{
+								"key": "x-api-key",
+								"value": "1b34X9pNjg5lMvRAXLNTS85TQgrzoYLEa3LUQ6Wh"
+							},
+							{
+								"key": "login-token",
+								"value": "{{loginToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/bookings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Booking Info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate json data Type",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Data Type Validations\", ()=> {",
+									"    pm.expect(jsonData).to.be.an(\"object\");",
+									"    pm.expect(jsonData.bookings).to.be.a(\"array\");",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "device-os",
+								"value": "{{deviceOs}}"
+							},
+							{
+								"key": "app-locale",
+								"value": "{{appLocale}}"
+							},
+							{
+								"key": "x-api-key",
+								"value": "0qNSzqieHI5M36LLgY7Y85Zco0SMXKyr37MIOSAG"
+							},
+							{
+								"key": "login-token",
+								"value": "{{loginToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/bookings/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"bookings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Weather",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "device-os",
+								"value": "{{deviceOs}}"
+							},
+							{
+								"key": "app-locale",
+								"value": "{{appLocale}}"
+							},
+							{
+								"key": "x-api-key",
+								"value": "0qNSzqieHI5M36LLgY7Y85Zco0SMXKyr37MIOSAG"
+							},
+							{
+								"key": "login-token",
+								"value": "{{loginToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/bookings/{{bookingRef}}/weather",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"bookings",
+								"{{bookingRef}}",
+								"weather"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Healthcheck",
+			"item": [
+				{
+					"name": "Healthcheck",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate json data Type",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Data Type Validations\", ()=> {",
+									"    pm.expect(jsonData).to.be.an(\"object\");",
+									"    pm.expect(jsonData.market).to.be.a(\"string\");",
+									"    pm.expect(jsonData.status).to.be.a(\"object\");",
+									"    pm.expect(jsonData.status.health).to.be.a(\"string\");",
+									"    pm.expect(jsonData.status.uptime).to.be.a(\"number\");",
+									"});",
+									"//Validate the data",
+									"pm.test(\"Validate Response Data\", () => {",
+									"    pm.expect(jsonData.status.health).to.eql(\"HEALTHY\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "app-locale",
+								"value": "{{appLocale}}"
+							},
+							{
+								"key": "x-api-key",
+								"value": "0qNSzqieHI5M36LLgY7Y85Zco0SMXKyr37MIOSAG"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/healthcheck",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"healthcheck"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"//Validating  the APIs header's response",
+					"",
+					"pm.test(\"Headers: Content-Type is application/json\", ()=> {",
+					"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");",
+					"});",
+					"pm.test(\"Headers: Connection is keep-alive\", ()=> {",
+					"    pm.expect(pm.response.headers.get(\"Connection\")).to.eql(\"keep-alive\");",
+					"});",
+					"",
+					"//Validating  the APIs header's common returns are present",
+					"",
+					"pm.test(\"Headers: Content-Type is Present\", ()=> {",
+					"    pm.response.to.have.header(\"Content-Type\");",
+					"});",
+					"",
+					"pm.test(\"Headers: x-amz-apigw-id is Present\", ()=> {",
+					"    pm.response.to.have.header(\"x-amz-apigw-id\");",
+					"});",
+					"",
+					"pm.test(\"Headers: x-amzn-RequestId is Present\", ()=> {",
+					"    pm.response.to.have.header(\"x-amzn-RequestId\");",
+					"});",
+					"",
+					"pm.test(\"Headers: Date is Present\", ()=> {",
+					"    pm.response.to.have.header(\"Date\");",
+					"});",
+					"",
+					"pm.test(\"Headers: Content-Length is Present\", ()=> {",
+					"    pm.response.to.have.header(\"Content-Length\");",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://4s9rh46bpe.execute-api.eu-central-1.amazonaws.com/test",
+			"type": "string"
+		}
+	]
+}
